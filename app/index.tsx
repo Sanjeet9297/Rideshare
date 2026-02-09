@@ -11,9 +11,10 @@ import HomePage from "../components/Home/page";
 import NotificationPage from "../components/Notification/page";
 import OfferPage from "../components/Offer/page";
 import ProfilePage from "../components/Profile/page";
+import WalletPage from "../components/wallet/page";
 
 export default function Index() {
-  const [step, setStep] = useState<'onboarding' | 'location' | 'welcome' | 'signup' | 'login' | 'home' | 'notification' | 'favourite' | 'profile' | 'offer'>('onboarding');
+  const [step, setStep] = useState<'onboarding' | 'location' | 'welcome' | 'signup' | 'login' | 'home' | 'notification' | 'favourite' | 'profile' | 'offer' | 'wallet'>('onboarding');
 
   if (step === 'location') {
     return (
@@ -65,7 +66,7 @@ export default function Index() {
   if (step === 'home') {
     return (
       <View style={styles.container}>
-        <HomePage 
+        <HomePage
           onNotificationClick={() => setStep('notification')}
           onNavClick={(page) => setStep(page as any)}
         />
@@ -84,7 +85,7 @@ export default function Index() {
   if (step === 'favourite') {
     return (
       <View style={styles.container}>
-        <FavouritePage 
+        <FavouritePage
           onMenuClick={() => setStep('home')}
           onNavClick={(page) => setStep(page as any)}
         />
@@ -95,7 +96,7 @@ export default function Index() {
   if (step === 'profile') {
     return (
       <View style={styles.container}>
-        <ProfilePage 
+        <ProfilePage
           onMenuClick={() => setStep('home')}
           onNavClick={(page) => setStep(page as any)}
         />
@@ -106,7 +107,18 @@ export default function Index() {
   if (step === 'offer') {
     return (
       <View style={styles.container}>
-        <OfferPage 
+        <OfferPage
+          onMenuClick={() => setStep('home')}
+          onNavClick={(page) => setStep(page as any)}
+        />
+      </View>
+    )
+  }
+
+  if (step === 'wallet') {
+    return (
+      <View style={styles.container}>
+        <WalletPage
           onMenuClick={() => setStep('home')}
           onNavClick={(page) => setStep(page as any)}
         />

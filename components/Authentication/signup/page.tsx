@@ -3,9 +3,10 @@ import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import { Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { CustomButton } from '../../shared';
 
 const COLORS = {
-    primary: '#00Bfa5',
+    primary: '#008955',
     text: '#1F2937',
     textSecondary: '#6B7280',
     border: '#E5E7EB',
@@ -135,9 +136,11 @@ export default function SignupPage({ onBack, onSignIn, onSignUp }: Props) {
                     </View>
 
                     {/* Sign Up Button */}
-                    <TouchableOpacity style={styles.signUpButton} onPress={onSignUp}>
-                        <Text style={styles.signUpButtonText}>Sign Up</Text>
-                    </TouchableOpacity>
+                    <CustomButton
+                        title="Sign Up"
+                        onPress={onSignUp}
+                        style={{ marginTop: 20 }}
+                    />
 
                     {/* OR Separator */}
                     <View style={styles.orContainer}>
@@ -308,19 +311,6 @@ const styles = StyleSheet.create({
     linkText: {
         color: COLORS.primary,
         fontWeight: '600',
-    },
-    signUpButton: {
-        backgroundColor: COLORS.primary,
-        borderRadius: 8,
-        height: 50,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginTop: 20,
-    },
-    signUpButtonText: {
-        color: '#FFF',
-        fontSize: 16,
-        fontWeight: 'bold',
     },
     orContainer: {
         flexDirection: 'row',

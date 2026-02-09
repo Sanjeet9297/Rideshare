@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import SideMenu from '../SideMenu/page';
+import { BottomNavigation } from '../shared';
 
 const COLORS = {
     primary: '#00Bfa5',
@@ -84,35 +85,10 @@ export default function FavouritePage({ onMenuClick, onNavClick }: Props) {
             </ScrollView>
 
             {/* Bottom Navigation Bar */}
-            <View style={styles.bottomNav}>
-                <TouchableOpacity style={styles.navItem} activeOpacity={0.7} onPress={() => onNavClick?.('home')}>
-                    <Ionicons name="home-outline" size={24} color={COLORS.textSecondary} />
-                    <Text style={styles.navText}>Home</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.navItem} activeOpacity={0.7} onPress={() => onNavClick?.('favourite')}>
-                    <Ionicons name="heart" size={24} color={COLORS.primary} />
-                    <Text style={[styles.navText, styles.navTextActive]}>Favourite</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.walletNavItem} activeOpacity={0.7} onPress={() => onNavClick?.('wallet')}>
-                    <View style={styles.walletButton}>
-                        <View style={styles.walletIconContainer}>
-                            <Ionicons name="wallet" size={24} color="#FFFFFF" />
-                        </View>
-                    </View>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.navItem} activeOpacity={0.7} onPress={() => onNavClick?.('offer')}>
-                    <Ionicons name="pricetag-outline" size={24} color={COLORS.textSecondary} />
-                    <Text style={styles.navText}>Offer</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.navItem} activeOpacity={0.7} onPress={() => onNavClick?.('profile')}>
-                    <Ionicons name="person-outline" size={24} color={COLORS.textSecondary} />
-                    <Text style={styles.navText}>Profile</Text>
-                </TouchableOpacity>
-            </View>
+            <BottomNavigation
+                activeTab="favourite"
+                onTabPress={(tab) => onNavClick?.(tab)}
+            />
 
             {/* Side Menu */}
             <SideMenu
@@ -219,57 +195,6 @@ const styles = StyleSheet.create({
     },
     removeButton: {
         padding: 4,
-    },
-    bottomNav: {
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        alignItems: 'center',
-        backgroundColor: '#FFFFFF',
-        paddingVertical: 12,
-        paddingHorizontal: 20,
-        borderTopWidth: 1,
-        borderTopColor: COLORS.border,
-        paddingBottom: 20,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: -2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3.84,
-        elevation: 5,
-    },
-    navItem: {
-        alignItems: 'center',
-        gap: 4,
-        flex: 1,
-    },
-    walletNavItem: {
-        alignItems: 'center',
-        marginTop: -20,
-    },
-    walletButton: {
-        width: 64,
-        height: 64,
-        borderRadius: 12,
-        backgroundColor: COLORS.primary,
-        alignItems: 'center',
-        justifyContent: 'center',
-        shadowColor: COLORS.primary,
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 8,
-        elevation: 8,
-        transform: [{ rotate: '45deg' }],
-    },
-    walletIconContainer: {
-        transform: [{ rotate: '-45deg' }],
-    },
-    navText: {
-        fontSize: 12,
-        color: COLORS.textSecondary,
-        marginTop: 2,
     },
     navTextActive: {
         color: COLORS.primary,

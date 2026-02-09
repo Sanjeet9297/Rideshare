@@ -1,183 +1,146 @@
 import { Ionicons } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { Dimensions, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+    Dimensions,
+    ImageBackground,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+} from 'react-native';
 import SideMenu from '../SideMenu/page';
+import { BottomNavigation } from '../shared';
 
 const { width, height } = Dimensions.get('window');
 
 const COLORS = {
-    primary: '#00Bfa5',
+    primary: '#00BFA5',
     primaryDark: '#008B75',
     text: '#1F2937',
     textSecondary: '#6B7280',
     background: '#FFFFFF',
-    lightGreen: '#E0F7F4',
-    border: '#E5E7EB',
+    lightGreen: '#E6FAF7',
 };
 
 // Placeholder map image
-const MAP_IMAGE_URI = 'https://media.wired.com/photos/59269cd37034dc5f91bec0f1/191:100/w_1280,c_limit/GoogleMapTA.jpg';
+const MAP_IMAGE_URI =
+    'https://media.wired.com/photos/59269cd37034dc5f91bec0f1/191:100/w_1280,c_limit/GoogleMapTA.jpg';
 
-interface Props {
-    onNotificationClick?: () => void;
-    onNavClick?: (page: string) => void;
-}
-
-export default function HomePage({ onNotificationClick, onNavClick }: Props) {
-    const [selectedService, setSelectedService] = useState<'transport' | 'delivery'>('transport');
+export default function HomePage({ onNotificationClick, onNavClick }) {
+    const [selectedService, setSelectedService] = useState<'transport' | 'delivery'>(
+        'transport'
+    );
     const [sideMenuVisible, setSideMenuVisible] = useState(false);
 
     return (
         <View style={styles.container}>
             <StatusBar style="dark" />
 
-            {/* Map View - Full Page */}
+            {/* MAP */}
             <View style={styles.mapContainer}>
-                <ImageBackground
-                    source={{ uri: MAP_IMAGE_URI }}
-                    style={styles.mapBackground}
-                    resizeMode="cover"
-                >
-                    {/* Location Pin with Concentric Circles */}
-                    <View style={styles.locationMarkerContainer}>
-                        <View style={styles.circle3} />
-                        <View style={styles.circle2} />
-                        <View style={styles.circle1} />
-                        <View style={styles.locationPin}>
-                            <Ionicons name="location" size={24} color={COLORS.text} />
+                <ImageBackground source={{ uri: MAP_IMAGE_URI }} style={styles.map}>
+                    {/* Marker */}
+                    <View style={styles.markerWrapper}>
+                        <View style={styles.circleLarge} />
+                        <View style={styles.circleMedium} />
+                        <View style={styles.circleSmall} />
+                        <View style={styles.pin}>
+                            <Ionicons name="location" size={18} color="#fff" />
                         </View>
                     </View>
-
-                    {/* Water/River Line */}
-                    <View style={styles.waterLine} />
                 </ImageBackground>
 
-                {/* Top Bar - Overlay on Map */}
+                {/* TOP BAR */}
                 <View style={styles.topBar}>
-                    <TouchableOpacity 
-                        style={styles.menuButton} 
-                        activeOpacity={0.7}
+                    <TouchableOpacity
+                        style={styles.menuBtn}
                         onPress={() => setSideMenuVisible(true)}
                     >
-                        <View style={styles.menuIconContainer}>
-                            <View style={styles.menuLine} />
-                            <View style={styles.menuLine} />
-                            <View style={styles.menuLine} />
-                        </View>
+                        <Ionicons name="menu" size={22} color="#fff" />
                     </TouchableOpacity>
-                    <TouchableOpacity 
-                        style={styles.bellButton} 
-                        activeOpacity={0.7}
+
+                    <TouchableOpacity
+                        style={styles.notifyBtn}
                         onPress={onNotificationClick}
                     >
-                        <Ionicons name="notifications-outline" size={24} color={COLORS.text} />
+                        <Ionicons
+                            name="notifications-outline"
+                            size={22}
+                            color={COLORS.text}
+                        />
                     </TouchableOpacity>
-                </View>
-
-            </View>
-
-            {/* Bottom Section - Search, Service Tabs, Map Controls, and Navigation */}
-            <View style={styles.bottomSection}>
-                {/* Rental Button and Recenter Button */}
-                <View style={styles.mapControls}>
-                    <TouchableOpacity style={styles.rentalButton} activeOpacity={0.8}>
-                        <Text style={styles.rentalButtonText}>Rental</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.recenterButton} activeOpacity={0.8}>
-                        <Ionicons name="locate" size={20} color={COLORS.primary} />
-                    </TouchableOpacity>
-                </View>
-
-                {/* Search Bar and Service Selection */}
-                <View style={styles.searchContainer}>
-                    <View style={styles.searchBar}>
-                        <Ionicons name="search" size={20} color={COLORS.textSecondary} style={styles.searchIcon} />
-                        <Text style={styles.searchPlaceholder}>Where would you go?</Text>
-                        <TouchableOpacity activeOpacity={0.7}>
-                            <Ionicons name="heart-outline" size={20} color={COLORS.textSecondary} />
-                        </TouchableOpacity>
-                    </View>
-
-                    {/* Service Selection Tabs */}
-                    <View style={styles.serviceTabs}>
-                        <TouchableOpacity
-                            style={[
-                                styles.serviceTab,
-                                selectedService === 'transport' && styles.serviceTabActive
-                            ]}
-                            onPress={() => setSelectedService('transport')}
-                            activeOpacity={0.7}
-                        >
-                            <Text
-                                style={[
-                                    styles.serviceTabText,
-                                    selectedService === 'transport' && styles.serviceTabTextActive
-                                ]}
-                            >
-                                Transport
-                            </Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={[
-                                styles.serviceTab,
-                                selectedService === 'delivery' && styles.serviceTabActive
-                            ]}
-                            onPress={() => setSelectedService('delivery')}
-                            activeOpacity={0.7}
-                        >
-                            <Text
-                                style={[
-                                    styles.serviceTabText,
-                                    selectedService === 'delivery' && styles.serviceTabTextActive
-                                ]}
-                            >
-                                Delivery
-                            </Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-
-                {/* Bottom Navigation Bar */}
-                <View style={styles.bottomNav}>
-                <TouchableOpacity style={styles.navItem} activeOpacity={0.7} onPress={() => onNavClick?.('home')}>
-                    <Ionicons name="home" size={24} color={COLORS.primary} />
-                    <Text style={[styles.navText, styles.navTextActive]}>Home</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.navItem} activeOpacity={0.7} onPress={() => onNavClick?.('favourite')}>
-                    <Ionicons name="heart-outline" size={24} color={COLORS.textSecondary} />
-                    <Text style={styles.navText}>Favourite</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.walletNavItem} activeOpacity={0.7} onPress={() => onNavClick?.('wallet')}>
-                    <View style={styles.walletButton}>
-                        <View style={styles.walletIconContainer}>
-                            <Ionicons name="wallet" size={24} color="#FFFFFF" />
-                        </View>
-                    </View>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.navItem} activeOpacity={0.7} onPress={() => onNavClick?.('offer')}>
-                    <Ionicons name="pricetag-outline" size={24} color={COLORS.textSecondary} />
-                    <Text style={styles.navText}>Offer</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.navItem} activeOpacity={0.7} onPress={() => onNavClick?.('profile')}>
-                    <Ionicons name="person-outline" size={24} color={COLORS.textSecondary} />
-                    <Text style={styles.navText}>Profile</Text>
-                </TouchableOpacity>
                 </View>
             </View>
 
-            {/* Side Menu */}
+            {/* FLOATING CONTROLS */}
+            <View style={styles.controlsRow}>
+                <TouchableOpacity style={styles.rentalBtn}>
+                    <Text style={styles.rentalText}>Rental</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.locateBtn}>
+                    <Ionicons name="locate" size={22} color={COLORS.primaryDark} />
+                </TouchableOpacity>
+            </View>
+
+            {/* BOTTOM CARD */}
+            <View style={styles.bottomCard}>
+                {/* SEARCH */}
+                <View style={styles.searchBox}>
+                    <Ionicons name="search" size={20} color={COLORS.textSecondary} />
+                    <Text style={styles.searchText}>Where would you go?</Text>
+                    <Ionicons name="heart-outline" size={20} color={COLORS.textSecondary} />
+                </View>
+
+                {/* TABS */}
+                <View style={styles.tabs}>
+                    <TouchableOpacity
+                        style={[
+                            styles.tab,
+                            selectedService === 'transport' && styles.tabActive,
+                        ]}
+                        onPress={() => setSelectedService('transport')}
+                    >
+                        <Text
+                            style={[
+                                styles.tabText,
+                                selectedService === 'transport' && styles.tabTextActive,
+                            ]}
+                        >
+                            Transport
+                        </Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                        style={[
+                            styles.tab,
+                            selectedService === 'delivery' && styles.tabActive,
+                        ]}
+                        onPress={() => setSelectedService('delivery')}
+                    >
+                        <Text
+                            style={[
+                                styles.tabText,
+                                selectedService === 'delivery' && styles.tabTextActive,
+                            ]}
+                        >
+                            Delivery
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+
+            {/* BOTTOM NAV */}
+            <BottomNavigation
+                activeTab="home"
+                onTabPress={(tab) => onNavClick?.(tab)}
+            />
+
+            {/* SIDE MENU */}
             <SideMenu
                 visible={sideMenuVisible}
                 onClose={() => setSideMenuVisible(false)}
-                onMenuItemPress={(item) => {
-                    console.log('Menu item pressed:', item);
-                    // Handle menu item actions here
-                }}
             />
         </View>
     );
@@ -188,91 +151,54 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: COLORS.background,
     },
-    topBar: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        paddingHorizontal: 20,
-        paddingTop: 50,
-        paddingBottom: 12,
-        zIndex: 10,
-    },
-    menuButton: {
-        padding: 8,
-        backgroundColor: COLORS.primary,
-        borderRadius: 8,
-        width: 40,
-        height: 40,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    menuIconContainer: {
-        width: 20,
-        height: 16,
-        justifyContent: 'space-between',
-    },
-    menuLine: {
-        width: 20,
-        height: 2,
-        backgroundColor: '#FFFFFF',
-        borderRadius: 1,
-    },
-    bellButton: {
-        padding: 8,
-        backgroundColor: '#FFFFFF',
-        borderRadius: 20,
-        width: 40,
-        height: 40,
-        justifyContent: 'center',
-        alignItems: 'center',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3.84,
-        elevation: 3,
-    },
+
+    /* MAP */
     mapContainer: {
-        flex: 1,
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
+        ...StyleSheet.absoluteFillObject,
     },
-    mapBackground: {
+    map: {
         width: '100%',
         height: '100%',
     },
-    locationMarkerContainer: {
+
+    /* TOP BAR */
+    topBar: {
         position: 'absolute',
-        top: '45%',
-        left: '50%',
-        marginLeft: -15,
-        marginTop: -15,
+        top: 50,
+        left: 20,
+        right: 20,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        zIndex: 10,
+    },
+    menuBtn: {
+        width: 42,
+        height: 42,
+        backgroundColor: COLORS.primaryDark,
+        borderRadius: 10,
         alignItems: 'center',
         justifyContent: 'center',
     },
-    circle1: {
-        position: 'absolute',
-        width: 60,
-        height: 60,
-        borderRadius: 30,
-        backgroundColor: COLORS.primary,
-        opacity: 0.2,
+    notifyBtn: {
+        width: 42,
+        height: 42,
+        backgroundColor: '#fff',
+        borderRadius: 21,
+        alignItems: 'center',
+        justifyContent: 'center',
+        elevation: 5,
     },
-    circle2: {
+
+    /* MARKER */
+    markerWrapper: {
         position: 'absolute',
-        width: 100,
-        height: 100,
-        borderRadius: 50,
-        backgroundColor: COLORS.primary,
-        opacity: 0.15,
+        top: '42%',
+        left: '50%',
+        transform: [{ translateX: -15 }, { translateY: -15 }],
+        alignItems: 'center',
+        justifyContent: 'center',
     },
-    circle3: {
+    circleLarge: {
         position: 'absolute',
         width: 140,
         height: 140,
@@ -280,158 +206,115 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.primary,
         opacity: 0.1,
     },
-    locationPin: {
-        width: 30,
-        height: 30,
-        borderRadius: 15,
-        backgroundColor: COLORS.text,
+    circleMedium: {
+        position: 'absolute',
+        width: 100,
+        height: 100,
+        borderRadius: 50,
+        backgroundColor: COLORS.primary,
+        opacity: 0.15,
+    },
+    circleSmall: {
+        position: 'absolute',
+        width: 60,
+        height: 60,
+        borderRadius: 30,
+        backgroundColor: COLORS.primary,
+        opacity: 0.2,
+    },
+    pin: {
+        width: 28,
+        height: 28,
+        borderRadius: 14,
+        backgroundColor: COLORS.primaryDark,
         alignItems: 'center',
         justifyContent: 'center',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5,
+        elevation: 6,
     },
-    waterLine: {
+
+    /* FLOATING BUTTONS */
+    controlsRow: {
         position: 'absolute',
-        bottom: '30%',
-        left: 0,
-        right: 0,
-        height: 8,
-        backgroundColor: '#81D4FA',
-        opacity: 0.6,
-    },
-    bottomSection: {
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        zIndex: 10,
-    },
-    mapControls: {
+        bottom: 220,
+        left: 20,
+        right: 20,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center',
-        paddingHorizontal: 20,
-        paddingBottom: 16,
+        zIndex: 10,
     },
-    rentalButton: {
+    rentalBtn: {
         backgroundColor: COLORS.primaryDark,
-        paddingHorizontal: 24,
-        paddingVertical: 12,
-        borderRadius: 8,
+        paddingHorizontal: 28,
+        paddingVertical: 14,
+        borderRadius: 14,
+        elevation: 6,
     },
-    rentalButtonText: {
-        color: '#FFFFFF',
+    rentalText: {
+        color: '#fff',
         fontSize: 16,
         fontWeight: '600',
     },
-    recenterButton: {
-        width: 44,
-        height: 44,
-        borderRadius: 22,
-        backgroundColor: '#FFFFFF',
+    locateBtn: {
+        width: 48,
+        height: 48,
+        backgroundColor: '#fff',
+        borderRadius: 24,
         alignItems: 'center',
         justifyContent: 'center',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3.84,
+        elevation: 6,
+    },
+
+    /* BOTTOM CARD */
+    bottomCard: {
+        position: 'absolute',
+        bottom: 80,
+        left: 0,
+        right: 0,
+        backgroundColor: COLORS.lightGreen,
+        padding: 16,
+        borderTopLeftRadius: 24,
+        borderTopRightRadius: 24,
+        paddingBottom: 30,
+    },
+
+    searchBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        borderRadius: 12,
+        padding: 14,
         elevation: 3,
     },
-    searchContainer: {
-        backgroundColor: COLORS.lightGreen,
-        paddingHorizontal: 20,
-        paddingTop: 16,
-        paddingBottom: 12,
-    },
-    searchBar: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: '#FFFFFF',
-        borderRadius: 12,
-        paddingHorizontal: 16,
-        paddingVertical: 14,
-        marginBottom: 12,
-        gap: 12,
-    },
-    searchIcon: {
-        marginRight: 4,
-    },
-    searchPlaceholder: {
+    searchText: {
         flex: 1,
-        fontSize: 16,
+        marginLeft: 10,
+        fontSize: 15,
         color: COLORS.textSecondary,
     },
-    serviceTabs: {
+
+    tabs: {
         flexDirection: 'row',
-        gap: 12,
+        backgroundColor: '#fff',
+        borderRadius: 12,
+        marginTop: 12,
+        padding: 5,
+        elevation: 3,
     },
-    serviceTab: {
+    tab: {
         flex: 1,
         paddingVertical: 12,
-        paddingHorizontal: 16,
-        borderRadius: 8,
-        backgroundColor: COLORS.lightGreen,
+        borderRadius: 12,
         alignItems: 'center',
     },
-    serviceTabActive: {
+    tabActive: {
         backgroundColor: COLORS.primaryDark,
     },
-    serviceTabText: {
-        fontSize: 16,
-        fontWeight: '500',
+    tabText: {
+        fontSize: 15,
+        fontWeight: '600',
         color: COLORS.primaryDark,
     },
-    serviceTabTextActive: {
-        color: '#FFFFFF',
-    },
-    bottomNav: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        alignItems: 'center',
-        backgroundColor: '#FFFFFF',
-        paddingVertical: 12,
-        paddingHorizontal: 20,
-        borderTopWidth: 1,
-        borderTopColor: COLORS.border,
-        paddingBottom: 20,
-    },
-    navItem: {
-        alignItems: 'center',
-        gap: 4,
-        flex: 1,
-    },
-    walletNavItem: {
-        alignItems: 'center',
-        marginTop: -20,
-    },
-    walletButton: {
-        width: 64,
-        height: 64,
-        borderRadius: 12,
-        backgroundColor: COLORS.primaryDark,
-        alignItems: 'center',
-        justifyContent: 'center',
-        shadowColor: COLORS.primary,
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 8,
-        elevation: 8,
-        transform: [{ rotate: '45deg' }],
-    },
-    walletIconContainer: {
-        transform: [{ rotate: '-45deg' }],
-    },
-    navText: {
-        fontSize: 12,
-        color: COLORS.textSecondary,
-        marginTop: 2,
-    },
-    navTextActive: {
-        color: COLORS.primary,
-        fontWeight: '600',
+    tabTextActive: {
+        color: '#fff',
     },
 });
-

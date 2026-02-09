@@ -2,12 +2,13 @@ import { Ionicons } from '@expo/vector-icons';
 import * as Location from 'expo-location';
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { ActivityIndicator, Alert, Dimensions, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Dimensions, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { CustomButton } from '../../shared';
 
 const { width, height } = Dimensions.get('window');
 
 const COLORS = {
-    primary: '#00Bfa5', // Green
+    primary: '#008955', // Green
     text: '#1F2937',
     textSecondary: '#6B7280',
     cardBackground: '#FFFFFF',
@@ -75,18 +76,11 @@ export default function LocationPage({ onSkip, onConfirm }: Props) {
                     </Text>
 
                     {/* Use My Location Button */}
-                    <TouchableOpacity
-                        style={[styles.primaryButton, loading && { opacity: 0.7 }]}
-                        activeOpacity={0.8}
+                    <CustomButton
+                        title="Use my location"
                         onPress={handleUseMyLocation}
-                        disabled={loading}
-                    >
-                        {loading ? (
-                            <ActivityIndicator color="#FFF" />
-                        ) : (
-                            <Text style={styles.primaryButtonText}>Use my location</Text>
-                        )}
-                    </TouchableOpacity>
+                        loading={loading}
+                    />
 
                     {/* Skip Button */}
                     <TouchableOpacity style={styles.skipButton} activeOpacity={0.6} onPress={onSkip}>
@@ -146,10 +140,10 @@ const styles = StyleSheet.create({
         width: 60,
         height: 60,
         borderRadius: 30,
-        backgroundColor: '#00Bfa5', // Primary Green
+        backgroundColor: '#008955', // Primary Green
         alignItems: 'center',
         justifyContent: 'center',
-        shadowColor: '#00Bfa5',
+        shadowColor: '#008955',
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.3,
         shadowRadius: 8,
@@ -169,19 +163,6 @@ const styles = StyleSheet.create({
         marginBottom: 32,
         lineHeight: 22,
         paddingHorizontal: 10,
-    },
-    primaryButton: {
-        width: '100%',
-        backgroundColor: COLORS.primary,
-        paddingVertical: 16,
-        borderRadius: 12,
-        alignItems: 'center',
-        marginBottom: 16,
-        shadowColor: COLORS.primary,
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.2,
-        shadowRadius: 4,
-        elevation: 2,
     },
     primaryButtonText: {
         color: '#FFF',
